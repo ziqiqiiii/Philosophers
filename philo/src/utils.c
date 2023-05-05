@@ -47,3 +47,17 @@ void	ft_putstr_fd(char *s, int fd)
 		i++;
 	}
 }
+
+void	ft_usleep(int ms)
+{
+	long	t;
+
+	t = current_t();
+	while (1)
+	{
+		if (current_t() - t >= ms)
+			break;
+		usleep(100);
+	}
+
+}

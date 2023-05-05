@@ -17,12 +17,23 @@ t_forks *initialize_fork(int num)
     return (f);
 }
 
-long    current_t()
+void    init_mutex(t_info *ps, int num)
 {
-    struct timeval t;
+    int i;
+    pthread_mutex_t *print;
+    pthread_mutex_t *death_block;
 
-    gettimeofday(&t, NULL);
-    return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
+    i = -1;
+    print = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+    pthread_mutex_init(print, NULL);
+    death_block = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+    pthread_mutex_init(death_block, NULL);
+    while (++i < num)
+    {
+        ps[i].print = print;
+        ps[i].death_block = death_block;
+    }
+
 }
 
 t_info *initialize(int argc, char **argv)
@@ -37,7 +48,6 @@ t_info *initialize(int argc, char **argv)
     long    eat;
     int     min_eat;
     long    t;
-    pthread_mutex_t *block;
 
     num = ft_atoi(argv[1]);
     die = ft_atoi(argv[2]);
@@ -46,11 +56,10 @@ t_info *initialize(int argc, char **argv)
     if (argc == 6)
         min_eat = ft_atoi(argv[5]);
     else
-        min_eat = 0;
+        min_eat = -1;
     ps = (t_info *)malloc(sizeof(t_info) * num);
     forks = initialize_fork(num);
-    block = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-    pthread_mutex_init(block, NULL);
+    init_mutex(ps, num);
     i = -1;
     while (++i < num)
     {
@@ -60,12 +69,9 @@ t_info *initialize(int argc, char **argv)
         ps[i].num = num;
         ps[i].sleep = sleep;
         ps[i].die = die;
+        ps[i].eat = eat;
         ps[i].min_eat = min_eat;
-        ps[i].die_state = 0;
-        t = current_t();
-        ps[i].start_time = t;
-        ps[i].last_eat = t;
-        ps[i].block = block;
+        ps[i].death_state = 0;
         if (pthread_create(&ps[i].philos, NULL, (void *)philosopher, (void *)(ps + i)) != 0)
         {
             printf("\nThread creation error\n");

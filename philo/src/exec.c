@@ -4,13 +4,24 @@ void *philosopher(void *v)
 {
     t_info *ps;
     int i = -1;
+    long t;
 
     ps = (t_info *)v;
-    while (++i < ps->num)
+    pthread_mutex_lock(ps->death_block);
+    t = current_t();
+    ps->start_time = t;
+    ps->last_eat = t;
+    pthread_mutex_unlock(ps->death_block);
+    if ((ps->id + 1) % 2 == 1)
     {
         thinking(ps);
+        ft_usleep(100);
+    }
+    while (++i < 5)
+    {
         eating(ps);
         sleeping(ps);
+        thinking(ps);
     }
 }  
 
@@ -21,8 +32,8 @@ void    thinking(t_info *ps)
 
 void    sleeping(t_info *ps)
 {
-    usleep(ps->sleep * 1000);
     print(ps, 's');
+    ft_usleep(ps->sleep);
 }
 
 void    eating(t_info *ps)
@@ -38,7 +49,7 @@ void    pick_up(t_info *ps)
 
     f = (t_forks *)ps->forks;
     num = ps->num;
-    if (even_odd(ps->id + 1) == 0)
+    if (even_odd(ps->id) == 0)
     {
         pthread_mutex_lock(&f->forks[ps->id]);
         pthread_mutex_lock(&f->forks[(ps->id + 1) % num]);
@@ -58,10 +69,10 @@ void    put_down(t_info *ps)
     
     f = (t_forks *)ps->forks;
     num = ps->num;
-    usleep(ps->eat * 1000);
     print(ps, 'e');
-	ps->last_eat = current_t() + ps->eat;
-    if (even_odd(ps->id + 1) == 0)
+    ft_usleep(ps->eat);
+	ps->last_eat = current_t();
+    if (even_odd(ps->id) == 0)
     {
         pthread_mutex_unlock(&f->forks[(ps->id + 1) % num]);
         pthread_mutex_unlock(&f->forks[ps->id]);

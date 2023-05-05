@@ -23,10 +23,12 @@ typedef struct s_info
 	long			die;
 	long			eat;
 	int				min_eat;
-	int				die_state;
+	int				death_state;
 	long			start_time;
 	long			last_eat;
-	pthread_mutex_t	*block;
+	pthread_mutex_t	*death_block;
+	pthread_mutex_t	*print;
+	// pthread_mutex_t *start;
 }	t_info;
 
 # define RED "\033[031m"
@@ -44,6 +46,7 @@ typedef struct s_info
 int ft_strlen(char *s);
 int	ft_atoi(const char *str);
 void	ft_putstr_fd(char *s, int fd);
+void	ft_usleep(int ms);
 
 //even-odd
 int even_odd(int i);
@@ -60,10 +63,17 @@ void    eating(t_info *ps);
 void    sleeping(t_info *ps);
 void    thinking(t_info *ps);
 long    current_t();
+
 //pthread.c
 t_info  *pthreadjoin(t_info *ps);
 t_info  *mutexdestroy(t_info *ps);
 
 //print.c
 void    print(t_info *ps, int c);
+
+//error_check.c
+int error_check(int argc, char **argv);
+
+//death_checker.c
+void death_checker(t_info *ps);
 #endif
