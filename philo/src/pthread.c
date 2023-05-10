@@ -16,7 +16,7 @@ t_info  *pthreadjoin(t_info *ps)
     return (ps);
 }
 
-t_info  *mutexdestroy(t_info *ps)
+void    mutexdestroy(t_info *ps)
 {
     int i;
 

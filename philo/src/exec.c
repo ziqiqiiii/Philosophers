@@ -1,37 +1,44 @@
 #include "../includes/philo.h"
 
-void *philosopher(void *v)
+
+int helper(t_info *ps)
+{
+    int i;
+
+    i = 0;
+    if (pthread_mutex_lock(ps->death_block) != 0)
+        exit(printf("Lock Failed"));   
+    if (*ps->death_state == 1)
+        i = 1;
+    pthread_mutex_unlock(ps->death_block);
+    return (i);
+}
+
+void philosopher(void *v)
 {
     t_info *ps;
     int i = -1;
     long t;
 
     ps = (t_info *)v;
-    pthread_mutex_lock(ps->last_eat_lock);
+    if (pthread_mutex_lock(ps->start) != 0)
+        exit(printf("Lock Failed"));
     t = current_t();
     ps->start_time = t;
     ps->last_eat = t;
-    pthread_mutex_unlock(ps->last_eat_lock);
+    pthread_mutex_unlock(ps->start);
     if ((ps->id + 1) % 2 == 1)
     {
         thinking(ps);
         ft_usleep(100);
     }
-    // lock
-    pthread_mutex_lock(&ps->death_block[ps->id]);
-    while (&ps->death_state == 0)
+    while (helper(ps) == 0)
     {
-        // unlock
-        pthread_mutex_unlock(&ps->death_block[ps->id]);
         eating(ps);
         sleeping(ps);
         thinking(ps);
-        //lock
-        pthread_mutex_lock(&ps->death_block[ps->id]);
     }
-    // unlock
-    pthread_mutex_unlock(&ps->death_block[ps->id]);
-}  
+}
 
 void    thinking(t_info *ps)
 {
@@ -59,13 +66,17 @@ void    pick_up(t_info *ps)
     num = ps->num;
     if (even_odd(ps->id) == 0)
     {
-        pthread_mutex_lock(&f->forks[ps->id]);
-        pthread_mutex_lock(&f->forks[(ps->id + 1) % num]);
+        if (pthread_mutex_lock(&f->forks[ps->id]) != 0)
+            exit(printf("Lock Failed"));
+        if (pthread_mutex_lock(&f->forks[(ps->id + 1) % num]) != 0)
+            exit(printf("Lock Failed"));
     }
     else
     {
-        pthread_mutex_lock(&f->forks[(ps->id + 1) % num]);
-        pthread_mutex_lock(&f->forks[ps->id]);
+        if (pthread_mutex_lock(&f->forks[(ps->id + 1) % num]) != 0)
+            exit(printf("Lock Failed"));
+        if (pthread_mutex_lock(&f->forks[ps->id]) != 0)
+            exit(printf("Lock Failed"));
     }
     print(ps, 'f');
 }
@@ -89,7 +100,8 @@ void    put_down(t_info *ps)
         pthread_mutex_unlock(&f->forks[ps->id]);
         pthread_mutex_unlock(&f->forks[(ps->id + 1) % num]);
     }
-    pthread_mutex_lock(ps->last_eat_lock);
+    if (pthread_mutex_lock(ps->last_eat_lock) != 0)
+        exit(printf("Lock Failed"));
 	ps->last_eat = current_t();
     pthread_mutex_unlock(ps->last_eat_lock);
 }

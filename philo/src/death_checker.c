@@ -11,21 +11,21 @@ void death_checker(t_info *ps)
     {
         if (i + 1 > ps[0].num)
             i = 0;
-        pthread_mutex_lock(ps[i].last_eat_lock);
+        if (pthread_mutex_lock(ps[i].last_eat_lock) != 0)
+            exit(printf("Lock Failed"));
         lasteat_t = ps[i].last_eat;
-        // pthread_mutex_unlock(ps[i].last_eat_lock);
-        // pthread_mutex_lock(ps[i].last_eat_lock);
+        pthread_mutex_unlock(ps[i].last_eat_lock);
         t = current_t();
-        printf("\n%i %li time taken \n death time %li\n", ps[i].id + 1, t - ps[i].last_eat, ps[i].die);
+        // printf("\n%i %li time taken \n death time %li\n", ps[i].id + 1, t - ps[i].last_eat, ps[i].die);
         if (t - lasteat_t >= ps[i].die)
         {
-            pthread_mutex_unlock(ps[0].last_eat_lock);
-            pthread_mutex_lock(&ps[i].death_block[i]);
-            *ps[i].death_state = 1;
-            pthread_mutex_unlock(&ps[i].death_block[i]);
+            if (pthread_mutex_lock(ps[i].death_block) != 0)
+                exit(printf("Lock Failed"));
+            *(ps[i].death_state) = 1;
+            if (pthread_mutex_unlock(ps[i].death_block) != 0)
+                exit(printf("Unlock Failed"));
             break ;
         }
-        pthread_mutex_unlock(ps[i].last_eat_lock);
         ft_usleep(100);
         i++;
     }

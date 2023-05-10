@@ -33,6 +33,15 @@ typedef struct s_info
 	pthread_mutex_t *start;
 }	t_info;
 
+typedef struct s_mutex
+{
+	pthread_mutex_t print;
+    pthread_mutex_t death_block;
+    pthread_mutex_t last_eat_lock;
+    pthread_mutex_t death_checker;
+	pthread_mutex_t	start;
+}	t_mutex;
+
 # define RED "\033[031m"
 # define GREEN "\033[032m"
 # define YELLOW "\033[033m"
@@ -59,7 +68,7 @@ t_forks *initialize_fork(int num);
 t_info *initialize(int argc, char **argv);
 
 //exec.c
-void	*philosopher(void *v);
+void	philosopher(void *v);
 void    pick_up(t_info *ps);
 void    put_down(t_info *ps);
 void    eating(t_info *ps);
@@ -69,7 +78,7 @@ long    current_t();
 
 //pthread.c
 t_info  *pthreadjoin(t_info *ps);
-t_info  *mutexdestroy(t_info *ps);
+void	mutexdestroy(t_info *ps);
 
 //print.c
 void    print(t_info *ps, int c);
