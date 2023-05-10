@@ -23,12 +23,14 @@ typedef struct s_info
 	long			die;
 	long			eat;
 	int				min_eat;
-	int				death_state;
+	int				*death_state;
 	long			start_time;
 	long			last_eat;
 	pthread_mutex_t	*death_block;
 	pthread_mutex_t	*print;
-	// pthread_mutex_t *start;
+	pthread_mutex_t *last_eat_lock;
+	pthread_mutex_t	*death_checker;
+	pthread_mutex_t *start;
 }	t_info;
 
 # define RED "\033[031m"
@@ -43,10 +45,11 @@ typedef struct s_info
 # define BOLD "\033[1m"
 
 //utils.c
-int ft_strlen(char *s);
-int	ft_atoi(const char *str);
+int 	ft_strlen(char *s);
+int		ft_atoi(const char *str);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_usleep(int ms);
+int		ft_strncmp(const char *s1, const char *s2, unsigned int n);
 
 //even-odd
 int even_odd(int i);
@@ -76,4 +79,7 @@ int error_check(int argc, char **argv);
 
 //death_checker.c
 void death_checker(t_info *ps);
+
+//free.c
+void    free_all(t_info **ps);
 #endif

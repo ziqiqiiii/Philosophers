@@ -13,5 +13,6 @@ int main(int argc, char **argv)
     ps = initialize(argc, argv);
     death_checker(ps);
     ps = pthreadjoin(ps);
-    ps = mutexdestroy(ps);
+    // ps = mutexdestroy(ps);
+    // free_all(&ps);
 } 

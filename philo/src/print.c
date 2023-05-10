@@ -13,7 +13,7 @@ char *choose_colour(int id)
     else if (id == 6)
         return (PINK);
     else
-        return (NC);
+        return (TEAL);
 }
 
 void    print(t_info *ps, int c)

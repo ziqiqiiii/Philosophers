@@ -7,22 +7,30 @@ void *philosopher(void *v)
     long t;
 
     ps = (t_info *)v;
-    pthread_mutex_lock(ps->death_block);
+    pthread_mutex_lock(ps->last_eat_lock);
     t = current_t();
     ps->start_time = t;
     ps->last_eat = t;
-    pthread_mutex_unlock(ps->death_block);
+    pthread_mutex_unlock(ps->last_eat_lock);
     if ((ps->id + 1) % 2 == 1)
     {
         thinking(ps);
         ft_usleep(100);
     }
-    while (++i < 5)
+    // lock
+    pthread_mutex_lock(&ps->death_block[ps->id]);
+    while (&ps->death_state == 0)
     {
+        // unlock
+        pthread_mutex_unlock(&ps->death_block[ps->id]);
         eating(ps);
         sleeping(ps);
         thinking(ps);
+        //lock
+        pthread_mutex_lock(&ps->death_block[ps->id]);
     }
+    // unlock
+    pthread_mutex_unlock(&ps->death_block[ps->id]);
 }  
 
 void    thinking(t_info *ps)
@@ -71,7 +79,6 @@ void    put_down(t_info *ps)
     num = ps->num;
     print(ps, 'e');
     ft_usleep(ps->eat);
-	ps->last_eat = current_t();
     if (even_odd(ps->id) == 0)
     {
         pthread_mutex_unlock(&f->forks[(ps->id + 1) % num]);
@@ -82,4 +89,7 @@ void    put_down(t_info *ps)
         pthread_mutex_unlock(&f->forks[ps->id]);
         pthread_mutex_unlock(&f->forks[(ps->id + 1) % num]);
     }
+    pthread_mutex_lock(ps->last_eat_lock);
+	ps->last_eat = current_t();
+    pthread_mutex_unlock(ps->last_eat_lock);
 }

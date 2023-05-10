@@ -29,4 +29,19 @@ t_info  *mutexdestroy(t_info *ps)
             exit(1);
         }
     }
+    if (pthread_mutex_destroy(ps->print) != 0)
+    {
+        printf("\nError Mutex Destroyed\n");
+        exit(1);
+    }
+    // if (pthread_mutex_destroy(ps->death_block) != 0)
+    // {
+    //     printf("\nError Mutex Destroyed\n");
+    //     exit(1);
+    // }
+    if (pthread_mutex_destroy(ps->last_eat_lock) != 0)
+    {
+        printf("\nError Mutex Destroyed\n");
+        exit(1);
+    }
 }

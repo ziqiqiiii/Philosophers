@@ -7,6 +7,21 @@ int ft_strlen(char *s)
     return (ft_strlen(s + 1) + 1);
 }
 
+int	ft_strncmp(const char *s1, const char *s2, unsigned int n)
+{
+	unsigned int	a;
+
+	a = 0;
+	while (a < n)
+	{
+		if (s1[a] != '\0' && (s1[a] == s2[a]))
+			a++;
+		else
+			return ((unsigned char)s1[a] - (unsigned char)s2[a]);
+	}
+	return (0);
+}
+
 int	ft_atoi(const char *str)
 {
 	int	i;
