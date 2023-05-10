@@ -7,10 +7,12 @@ int helper(t_info *ps)
 
     i = 0;
     if (pthread_mutex_lock(ps->death_block) != 0)
-        exit(printf("Lock Failed"));   
-    if (*ps->death_state == 1)
+        exit(printf("Lock Failed")); 
+    printf("%i helper death %i %p\n", ps->id +1, *ps->death_state, ps->death_state);
+    if (*ps->death_state != 0)
         i = 1;
     pthread_mutex_unlock(ps->death_block);
+    printf("helper %i\n", i);
     return (i);
 }
 
@@ -25,7 +27,9 @@ void philosopher(void *v)
         exit(printf("Lock Failed"));
     t = current_t();
     ps->start_time = t;
+    pthread_mutex_lock(ps->last_eat_lock);
     ps->last_eat = t;
+    pthread_mutex_unlock(ps->last_eat_lock);
     pthread_mutex_unlock(ps->start);
     if ((ps->id + 1) % 2 == 1)
     {
