@@ -16,13 +16,13 @@ void death_checker(t_info *ps)
         lasteat_t = ps[i].last_eat;
         pthread_mutex_unlock(ps[i].last_eat_lock);
         t = current_t();
-        printf("\n%i % li time taken \n death time %li\n", ps[i].id + 1, t - lasteat_t, ps[i].die);
+        // printf("\n%i % li time taken \n death time %li\n", ps[i].id + 1, t - lasteat_t, ps[i].die);
         if (t - lasteat_t >= ps[i].die)
         {   
             if (pthread_mutex_lock(ps[i].death_block) != 0)
                 exit(printf("Lock Failed"));
-            *ps[i].death_state = 1;
-            printf("death %i %p\n", *ps[i].death_state, ps[i].death_state);
+            *ps[i].death_state += 1;
+            // printf("death %i %p\n", *ps[i].death_state, ps[i].death_state);
             if (pthread_mutex_unlock(ps[i].death_block) != 0)
                 exit(printf("Unlock Failed"));
             break ;
@@ -30,6 +30,7 @@ void death_checker(t_info *ps)
         ft_usleep(100);
         i++;
     }
+    // printf("outside loop death %i %p\n", *ps[i].death_state, ps[i].death_state);
 }
 
 //

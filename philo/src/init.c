@@ -57,13 +57,12 @@ t_info *initialize(int argc, char **argv)
 	long    eat;
 	int     min_eat;
 	long    t;
-	int		death_state;
+	int		*death_state;
 
 	num = ft_atoi(argv[1]);
 	die = ft_atoi(argv[2]);
 	eat = ft_atoi(argv[3]);
 	sleep = ft_atoi(argv[4]);
-	death_state = 0;
 	if (argc == 6)
 		min_eat = ft_atoi(argv[5]);
 	else
@@ -71,6 +70,8 @@ t_info *initialize(int argc, char **argv)
 	ps = (t_info *)malloc(sizeof(t_info) * num);
 	forks = initialize_fork(num);
 	init_mutex(ps, num);
+	death_state = malloc(sizeof(int));
+	*death_state = 0;
 	i = -1;
 	while (++i < num)
 	{
@@ -82,7 +83,7 @@ t_info *initialize(int argc, char **argv)
 		ps[i].die = die;
 		ps[i].eat = eat;
 		ps[i].min_eat = min_eat;
-		ps[i].death_state = &death_state;
+		ps[i].death_state = death_state;
 		if (pthread_create(&ps[i].philos, NULL, (void *)philosopher, (void *)(ps + i)) != 0)
 		{
 			printf("\nThread creation error\n");

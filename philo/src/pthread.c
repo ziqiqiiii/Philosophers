@@ -5,6 +5,8 @@ t_info  *pthreadjoin(t_info *ps)
     int i;
 
     i = -1;
+    // printf("nummmmm? %li\n", ps[1].eat);
+    // printf("pthreadjoin %i %p\n", *ps->death_state, ps->death_state);
     while (++i < ps->num)
     {
         if (pthread_join(ps[i].philos, NULL) != 0)
