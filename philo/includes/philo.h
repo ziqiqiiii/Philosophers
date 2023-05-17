@@ -82,12 +82,14 @@ void	mutexdestroy(t_info *ps);
 
 //print.c
 void    print(t_info *ps, int c);
+void    print_death(t_info *ps, int n);
 
 //error_check.c
 int error_check(int argc, char **argv);
 
 //death_checker.c
-void death_checker(t_info *ps);
+void	death_checker(t_info *ps);
+int		before_eat_or_sleep(t_info *ps, int c);
 
 //free.c
 void    free_all(t_info **ps);

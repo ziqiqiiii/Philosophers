@@ -27,7 +27,8 @@ void philosopher(void *v)
         exit(printf("Lock Failed"));
     t = current_t();
     ps->start_time = t;
-    pthread_mutex_lock(ps->last_eat_lock);
+    if (pthread_mutex_lock(ps->last_eat_lock) != 0)
+        exit(printf("Lock Failed"));
     ps->last_eat = t;
     pthread_mutex_unlock(ps->last_eat_lock);
     pthread_mutex_unlock(ps->start);
@@ -39,7 +40,11 @@ void philosopher(void *v)
     while (helper(ps) == 0)
     {
         eating(ps);
+        if (helper(ps) != 0)
+            break ;
         sleeping(ps);
+        if (helper(ps) != 0)
+            break ;
         thinking(ps);
     }
 }
@@ -51,8 +56,11 @@ void    thinking(t_info *ps)
 
 void    sleeping(t_info *ps)
 {
-    print(ps, 's');
-    ft_usleep(ps->sleep);
+    if (before_eat_or_sleep(ps, 's') == 0)
+    {
+        print(ps, 's');
+        ft_usleep(ps->sleep);
+    }
 }
 
 void    eating(t_info *ps)
@@ -92,8 +100,11 @@ void    put_down(t_info *ps)
     
     f = (t_forks *)ps->forks;
     num = ps->num;
-    print(ps, 'e');
-    ft_usleep(ps->eat);
+    if (before_eat_or_sleep(ps, 'e') == 0)
+    {
+        print(ps, 'e');
+        ft_usleep(ps->eat);
+    }
     if (even_odd(ps->id) == 0)
     {
         pthread_mutex_unlock(&f->forks[(ps->id + 1) % num]);
