@@ -8,7 +8,7 @@ int helper(t_info *ps)
     i = 0;
     if (pthread_mutex_lock(ps->death_block) != 0)
         exit(printf("Lock Failed")); 
-    // printf("%i helper death %i %p\n", ps->id + 1, *ps->death_state, ps->death_state);
+    printf("%i helper death %i %p\n", ps->id + 1, *ps->death_state, ps->death_state);
     if (*(ps->death_state) != 0)
         i = 1;
     pthread_mutex_unlock(ps->death_block);

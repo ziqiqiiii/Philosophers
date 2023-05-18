@@ -35,15 +35,7 @@ void    print(t_info *ps, int c)
         printf("%s%ld %d has taken fork %i\n%s", colour, t - ps->start_time, ps->id + 1, ps->id + 1, NC);
         printf("%s%ld %d has taken fork %i\n%s", colour, t - ps->start_time, ps->id + 1, ((ps->id + 1) % ps->num) + 1, NC);
     }
-    pthread_mutex_unlock(ps->print);
-}
-
-void    print_death(t_info *ps, int n)
-{
-    long t;
-
-    t = current_t();
-    pthread_mutex_lock(ps->print);
-    printf("%s%ld %d die\n%s", BOLD, t - ps->start_time, n, NC);
+    else if (c == 'd')
+        printf("%s%s%ld %d die\n%s", BOLD, PINK, t - ps->start_time, ps->id + 1, NC);
     pthread_mutex_unlock(ps->print);
 }
