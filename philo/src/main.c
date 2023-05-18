@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/18 14:58:13 by tzi-qi            #+#    #+#             */
+/*   Updated: 2023/05/18 15:40:31 by tzi-qi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/philo.h"
 
 int main(int argc, char **argv)
@@ -12,7 +24,7 @@ int main(int argc, char **argv)
     }
     ps = initialize(argc, argv);
     death_checker(ps);
-    ps = pthreadjoin(ps);
+    pthreadjoin(ps);
     mutexdestroy(ps);
     // free_all(&ps);
 } 

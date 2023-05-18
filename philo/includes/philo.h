@@ -13,6 +13,15 @@ typedef struct s_forks
 	int				num;
 } t_forks;
 
+typedef struct s_mutex
+{
+	pthread_mutex_t print;
+    pthread_mutex_t death_block;
+    pthread_mutex_t last_eat_lock;
+    pthread_mutex_t death_checker;
+	pthread_mutex_t	start;
+}	t_mutex;
+
 typedef struct s_info
 {
 	pthread_t 		philos;
@@ -25,22 +34,15 @@ typedef struct s_info
 	int				min_eat;
 	int				*death_state;
 	long			start_time;
-	long			last_eat;
+	long			death_time;
 	pthread_mutex_t	*death_block;
 	pthread_mutex_t	*print;
 	pthread_mutex_t *last_eat_lock;
 	pthread_mutex_t	*death_checker;
 	pthread_mutex_t *start;
+	t_mutex			*mutex;
 }	t_info;
 
-typedef struct s_mutex
-{
-	pthread_mutex_t print;
-    pthread_mutex_t death_block;
-    pthread_mutex_t last_eat_lock;
-    pthread_mutex_t death_checker;
-	pthread_mutex_t	start;
-}	t_mutex;
 
 # define RED "\033[031m"
 # define GREEN "\033[032m"
@@ -69,28 +71,38 @@ t_info *initialize(int argc, char **argv);
 
 //exec.c
 void	philosopher(void *v);
-void    pick_up(t_info *ps);
-void    put_down(t_info *ps);
-void    eating(t_info *ps);
-void    sleeping(t_info *ps);
-void    thinking(t_info *ps);
 long    current_t();
 
+//eat_sleep_think.c
+void    sleeping(t_info *ps);
+void    thinking(t_info *ps);
+void    eating(t_info *ps);
+void    pick_up(t_info *ps);
+void    put_down(t_info *ps);
+
 //pthread.c
-t_info  *pthreadjoin(t_info *ps);
+void	pthreadjoin(t_info *ps);
 void	mutexdestroy(t_info *ps);
 
 //print.c
-void    print(t_info *ps, int c);
-void    print_death(t_info *ps, int n);
+void	print(t_info *ps, int c);
 
 //error_check.c
-int error_check(int argc, char **argv);
+int		error_check(int argc, char **argv);
 
 //death_checker.c
 void	death_checker(t_info *ps);
-int		before_eat_or_sleep(t_info *ps, int c);
+int		before_sleep(t_info *ps);
+int		before_eat(t_info *ps);
+int		helper(t_info *ps);
 
 //free.c
 void    free_all(t_info **ps);
+
+//start.c
+void	start(t_info *ps);
+
+//ft_mutex.c
+void	ft_pthread_mutex_lock(pthread_mutex_t *c);
+void	ft_pthread_mutex_unlock(pthread_mutex_t *c);
 #endif

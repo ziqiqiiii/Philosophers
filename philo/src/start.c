@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_check.c                                      :+:      :+:    :+:   */
+/*   start.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/18 14:57:51 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/05/18 14:57:52 by tzi-qi           ###   ########.fr       */
+/*   Created: 2023/05/18 14:57:35 by tzi-qi            #+#    #+#             */
+/*   Updated: 2023/05/18 16:29:37 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int error_check(int argc, char **argv)
+void	start(t_info *ps)
 {
-    if (argc != 5 && argc != 6)
-        return (-1);
-    if (ft_atoi(argv[1]) == 0 || ft_atoi(argv[2]) == 0 \
-        || ft_atoi(argv[3]) == 0 || ft_atoi(argv[4]) == 0)
-        return (-1);
-    return (0);
+	long t;
+
+	ft_pthread_mutex_lock(ps->start);
+	t = current_t();
+	ps->start_time = t;
+	ft_pthread_mutex_lock(ps->last_eat_lock);
+	ps->death_time = t + ps->die;
+	ft_pthread_mutex_unlock(ps->last_eat_lock);
+	ft_pthread_mutex_unlock(ps->start);
 }

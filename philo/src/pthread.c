@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pthread.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/18 14:58:26 by tzi-qi            #+#    #+#             */
+/*   Updated: 2023/05/18 15:58:51 by tzi-qi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/philo.h"
 
-t_info  *pthreadjoin(t_info *ps)
+void    pthreadjoin(t_info *ps)
 {
     int i;
 
@@ -15,7 +27,16 @@ t_info  *pthreadjoin(t_info *ps)
             exit(1);
         }
     }
-    return (ps);
+}
+
+void free_mutex(t_mutex *mutex)
+{
+    pthread_mutex_destroy(&mutex->print);
+    pthread_mutex_destroy(&mutex->death_block);
+    pthread_mutex_destroy(&mutex->last_eat_lock);
+    pthread_mutex_destroy(&mutex->death_checker);
+    pthread_mutex_destroy(&mutex->start);
+    free(mutex);
 }
 
 void    mutexdestroy(t_info *ps)
@@ -31,19 +52,5 @@ void    mutexdestroy(t_info *ps)
             exit(1);
         }
     }
-    if (pthread_mutex_destroy(ps->print) != 0)
-    {
-        printf("\nError Mutex Destroyed\n");
-        exit(1);
-    }
-    // if (pthread_mutex_destroy(ps->death_block) != 0)
-    // {
-    //     printf("\nError Mutex Destroyed\n");
-    //     exit(1);
-    // }
-    if (pthread_mutex_destroy(ps->last_eat_lock) != 0)
-    {
-        printf("\nError Mutex Destroyed\n");
-        exit(1);
-    }
+    free_mutex(ps[0].mutex);
 }

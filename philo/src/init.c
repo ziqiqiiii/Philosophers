@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/18 14:58:08 by tzi-qi            #+#    #+#             */
+/*   Updated: 2023/05/18 15:57:23 by tzi-qi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/philo.h"
 
 t_forks *initialize_fork(int num)
@@ -24,16 +36,10 @@ void    init_mutex(t_info *ps, int num)
 
 	i = -1;
 	mutex = (t_mutex *)malloc(sizeof(t_mutex));
-	// print = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	pthread_mutex_init(&mutex->print, NULL);
-	// death_block = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * num);
 	pthread_mutex_init(&mutex->death_block, NULL);
-
-	// last_eat_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	pthread_mutex_init(&mutex->last_eat_lock, NULL);
-	// death_checker = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	pthread_mutex_init(&mutex->death_checker, NULL);
-	// start = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	pthread_mutex_init(&mutex->start, NULL);
 	while (++i < num)
 	{
@@ -43,6 +49,7 @@ void    init_mutex(t_info *ps, int num)
 		ps[i].death_checker = &mutex->death_checker;
 		ps[i].start = &mutex->start;
 	}
+	ps[0].mutex = mutex;
 }
 
 t_info *initialize(int argc, char **argv)

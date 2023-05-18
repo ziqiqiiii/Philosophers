@@ -4,7 +4,8 @@ NAME     = philo
 SRC_DIR  = ./src
 OBJ_DIR  = ./obj
 SRCS     = utils.c even_odd.c init.c exec.c main.c pthread.c print.c \
-			error_check.c current_t.c death_checker.c free.c
+			error_check.c current_t.c death_checker.c free.c start.c \
+			ft_mutex.c eat_sleep_think.c
 OBJS     = $(addprefix $(OBJ_DIR)/, $(SRCS:%.c=%.o))
 
 CC 		 = gcc -fsanitize=thread
