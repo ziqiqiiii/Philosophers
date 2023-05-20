@@ -17,8 +17,6 @@ void    pthreadjoin(t_info *ps)
     int i;
 
     i = -1;
-    // printf("nummmmm? %li\n", ps[1].eat);
-    // printf("pthreadjoin %i %p\n", *ps->death_state, ps->death_state);
     while (++i < ps->num)
     {
         if (pthread_join(ps[i].philos, NULL) != 0)
@@ -27,16 +25,6 @@ void    pthreadjoin(t_info *ps)
             exit(1);
         }
     }
-}
-
-void free_mutex(t_mutex *mutex)
-{
-    pthread_mutex_destroy(&mutex->print);
-    pthread_mutex_destroy(&mutex->death_block);
-    pthread_mutex_destroy(&mutex->last_eat_lock);
-    pthread_mutex_destroy(&mutex->death_checker);
-    pthread_mutex_destroy(&mutex->start);
-    free(mutex);
 }
 
 void    mutexdestroy(t_info *ps)
@@ -52,5 +40,10 @@ void    mutexdestroy(t_info *ps)
             exit(1);
         }
     }
-    free_mutex(ps[0].mutex);
+    pthread_mutex_destroy(&ps->mutex->print);
+    pthread_mutex_destroy(&ps->mutex->death_block);
+    pthread_mutex_destroy(&ps->mutex->eaten);
+    pthread_mutex_destroy(&ps->mutex->last_eat_lock);
+    pthread_mutex_destroy(&ps->mutex->start);
+    free(ps->mutex);
 }

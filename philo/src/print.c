@@ -33,8 +33,9 @@ void    print(t_info *ps, int c)
     long t;
     char    *colour;
 
-    colour = choose_colour(ps->id + 1);
-    ft_pthread_mutex_lock(ps->print);
+    // colour = choose_colour(ps->id + 1);
+    colour = PEACH;
+    ft_pthread_mutex_lock(&ps->mutex->print);
     t = current_t();
     if (c == 't')
         printf("%s%ld %d is thinking%s\n", colour, t - ps->start_time, ps->id + 1, NC);
@@ -49,5 +50,5 @@ void    print(t_info *ps, int c)
     }
     else if (c == 'd' && *ps->death_state == 1)
         printf("%s%s%ld %d died\n%s", BOLD, PINK, t - ps->start_time, ps->id + 1, NC);
-    ft_pthread_mutex_unlock(ps->print);
+    ft_pthread_mutex_unlock(&ps->mutex->print);
 }

@@ -19,9 +19,11 @@ void    thinking(t_info *ps)
 
 void    sleeping(t_info *ps)
 {
-    print(ps, 's');
     if (before_sleep(ps)== 0)
+    {
+        print(ps, 's');
         ft_usleep(ps->sleep);
+    }
 }
 
 void    eating(t_info *ps)
@@ -72,7 +74,7 @@ void    put_down(t_info *ps)
         ft_pthread_mutex_unlock(&f->forks[ps->id]);
         ft_pthread_mutex_unlock(&f->forks[(ps->id + 1) % num]);
     }
-    ft_pthread_mutex_lock(ps->last_eat_lock);
+    ft_pthread_mutex_lock(&ps->mutex->last_eat_lock);
 	ps->death_time = current_t() + ps->die;
-    ft_pthread_mutex_unlock(ps->last_eat_lock);
+    ft_pthread_mutex_unlock(&ps->mutex->last_eat_lock);
 }

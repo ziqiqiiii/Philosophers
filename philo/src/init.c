@@ -18,7 +18,6 @@ t_forks *initialize_fork(int num)
 	int     i;
 
 	f = (t_forks *)malloc(sizeof(t_forks));
-	f->num = num;
 	i = 0;
 	f->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * num);
 	while (i < num)
@@ -39,17 +38,11 @@ void    init_mutex(t_info *ps, int num)
 	pthread_mutex_init(&mutex->print, NULL);
 	pthread_mutex_init(&mutex->death_block, NULL);
 	pthread_mutex_init(&mutex->last_eat_lock, NULL);
-	pthread_mutex_init(&mutex->death_checker, NULL);
+	pthread_mutex_init(&mutex->eaten, NULL);
 	pthread_mutex_init(&mutex->start, NULL);
+	pthread_mutex_init(&mutex->eat_flag, NULL);
 	while (++i < num)
-	{
-		ps[i].print = &mutex->print;
-		ps[i].death_block = &mutex->death_block;
-		ps[i].last_eat_lock = &mutex->last_eat_lock;
-		ps[i].death_checker = &mutex->death_checker;
-		ps[i].start = &mutex->start;
-	}
-	ps[0].mutex = mutex;
+		ps[i].mutex = mutex;
 }
 
 t_info *initialize(int argc, char **argv)
@@ -63,6 +56,7 @@ t_info *initialize(int argc, char **argv)
 	long    die;
 	long    eat;
 	int     min_eat;
+	int		*eat_flag;
 	long    t;
 	int		*death_state;
 
@@ -74,11 +68,14 @@ t_info *initialize(int argc, char **argv)
 		min_eat = ft_atoi(argv[5]);
 	else
 		min_eat = -1;
+	// printf("min eat in init %i\n", min_eat);
 	ps = (t_info *)malloc(sizeof(t_info) * num);
 	forks = initialize_fork(num);
 	init_mutex(ps, num);
 	death_state = malloc(sizeof(int));
 	*death_state = 0;
+	eat_flag = malloc(sizeof(int));
+	*eat_flag = 0;
 	i = -1;
 	while (++i < num)
 	{
@@ -90,7 +87,9 @@ t_info *initialize(int argc, char **argv)
 		ps[i].die = die;
 		ps[i].eat = eat;
 		ps[i].min_eat = min_eat;
+		ps[i].eaten	= 0;
 		ps[i].death_state = death_state;
+		ps[i].eat_flag = eat_flag;
 		if (pthread_create(&ps[i].philos, NULL, (void *)philosopher, (void *)(ps + i)) != 0)
 		{
 			printf("\nThread creation error\n");

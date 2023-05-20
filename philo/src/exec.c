@@ -32,5 +32,9 @@ void philosopher(void *v)
         if (helper(ps) != 0)
             break ;
         thinking(ps);
+        ft_pthread_mutex_lock(&ps->mutex->eaten);
+            ps->eaten += 1;
+        // printf("%i exec %i\n", ps->id + 1, ps->eaten);
+        ft_pthread_mutex_unlock(&ps->mutex->eaten);
     }
 }

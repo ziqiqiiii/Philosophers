@@ -26,5 +26,5 @@ int main(int argc, char **argv)
     death_checker(ps);
     pthreadjoin(ps);
     mutexdestroy(ps);
-    // free_all(&ps);
+    // free_all(s&ps);
 } 

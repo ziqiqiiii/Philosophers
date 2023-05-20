@@ -16,11 +16,11 @@ void	start(t_info *ps)
 {
 	long t;
 
-	ft_pthread_mutex_lock(ps->start);
+	ft_pthread_mutex_lock(&ps->mutex->start);
 	t = current_t();
 	ps->start_time = t;
-	ft_pthread_mutex_lock(ps->last_eat_lock);
+	ft_pthread_mutex_lock(&ps->mutex->last_eat_lock);
 	ps->death_time = t + ps->die;
-	ft_pthread_mutex_unlock(ps->last_eat_lock);
-	ft_pthread_mutex_unlock(ps->start);
+	ft_pthread_mutex_unlock(&ps->mutex->last_eat_lock);
+	ft_pthread_mutex_unlock(&ps->mutex->start);
 }

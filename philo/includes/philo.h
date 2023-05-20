@@ -10,7 +10,6 @@
 typedef struct s_forks
 {
 	pthread_mutex_t *forks;
-	int				num;
 } t_forks;
 
 typedef struct s_mutex
@@ -18,29 +17,27 @@ typedef struct s_mutex
 	pthread_mutex_t print;
     pthread_mutex_t death_block;
     pthread_mutex_t last_eat_lock;
-    pthread_mutex_t death_checker;
+    pthread_mutex_t eaten;
+	pthread_mutex_t	eat_flag;
 	pthread_mutex_t	start;
 }	t_mutex;
 
 typedef struct s_info
 {
-	pthread_t 		philos;
-	t_forks			*forks;
-	int				id;
-	int				num;
-	long			sleep;
-	long			die;
-	long			eat;
-	int				min_eat;
-	int				*death_state;
-	long			start_time;
-	long			death_time;
-	pthread_mutex_t	*death_block;
-	pthread_mutex_t	*print;
-	pthread_mutex_t *last_eat_lock;
-	pthread_mutex_t	*death_checker;
-	pthread_mutex_t *start;
-	t_mutex			*mutex;
+	pthread_t	philos;
+	t_forks		*forks;
+	int			id;
+	int			num;
+	long		sleep;
+	long		die;
+	long		eat;
+	int			min_eat;
+	int			eaten;
+	int			*eat_flag;
+	int			*death_state;
+	long		start_time;
+	long		death_time;
+	t_mutex		*mutex;
 }	t_info;
 
 
@@ -52,6 +49,7 @@ typedef struct s_info
 # define TEAL "\033[036m"
 # define WHITE "\033[037m"
 # define NC "\033[0m"
+# define PEACH "\x1b[38;2;255;218;185m"
 
 # define BOLD "\033[1m"
 
