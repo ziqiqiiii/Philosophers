@@ -6,33 +6,11 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:58:32 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/05/18 14:58:32 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/05/23 20:25:52 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-
-int ft_strlen(char *s)
-{
-    if (*s == '\0')
-        return (0);
-    return (ft_strlen(s + 1) + 1);
-}
-
-int	ft_strncmp(const char *s1, const char *s2, unsigned int n)
-{
-	unsigned int	a;
-
-	a = 0;
-	while (a < n)
-	{
-		if (s1[a] != '\0' && (s1[a] == s2[a]))
-			a++;
-		else
-			return ((unsigned char)s1[a] - (unsigned char)s2[a]);
-	}
-	return (0);
-}
 
 int	ft_atoi(const char *str)
 {
@@ -61,20 +39,6 @@ int	ft_atoi(const char *str)
 	return (result);
 }
 
-void	ft_putstr_fd(char *s, int fd)
-{
-	int	i;
-
-	i = 0;
-	if (s == NULL)
-		return ;
-	while (s[i])
-	{
-		write(fd, &s[i], 1);
-		i++;
-	}
-}
-
 void	ft_usleep(int ms)
 {
 	long	t;
@@ -83,8 +47,7 @@ void	ft_usleep(int ms)
 	while (1)
 	{
 		if (current_t() - t >= ms)
-			break;
+			break ;
 		usleep(100);
 	}
-
 }

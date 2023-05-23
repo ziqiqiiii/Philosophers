@@ -6,75 +6,79 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 15:35:25 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/05/18 17:11:55 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/05/23 19:41:53 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-void    thinking(t_info *ps)
+void	thinking(t_info *ps)
 {
-    print(ps, 't');
+	print(ps, 't');
 }
 
-void    sleeping(t_info *ps)
+void	sleeping(t_info *ps)
 {
-    if (before_sleep(ps)== 0)
-    {
-        print(ps, 's');
-        ft_usleep(ps->sleep);
-    }
+	if (before_sleep(ps)== 0)
+	{
+		print(ps, 's');
+		ft_usleep(ps->sleep);
+	}
 }
 
-void    eating(t_info *ps)
+void	eating(t_info *ps)
 {
-    pick_up(ps);
-    put_down(ps);
+	pick_up(ps);
+	put_down(ps);
 }
 
-void    pick_up(t_info *ps)
+void	pick_up(t_info *ps)
 {
-    t_forks *f;
-    int     num;
+	t_forks	*f;
+	int		num;
 
-    f = (t_forks *)ps->forks;
-    num = ps->num;
+	f = (t_forks *)ps->forks;
+	num = ps->num;
 	if (helper(ps) != 0)
 		return ;
-    if (even_odd(ps->id) == 0)
-    {
-        ft_pthread_mutex_lock(&f->forks[ps->id]);
-        ft_pthread_mutex_lock(&f->forks[(ps->id + 1) % num]);
-    }
-    else
-    {
-        ft_pthread_mutex_lock(&f->forks[(ps->id + 1) % num]);
-        ft_pthread_mutex_lock(&f->forks[ps->id]);
-    }
-    print(ps, 'f');
+	if (even_odd(ps->id) == 0)
+	{
+		ft_pthread_mutex_lock(&f->forks[ps->id]);
+		ft_pthread_mutex_lock(&f->forks[(ps->id + 1) % num]);
+	}
+	else
+	{
+		ft_pthread_mutex_lock(&f->forks[(ps->id + 1) % num]);
+		ft_pthread_mutex_lock(&f->forks[ps->id]);
+	}
+	if (helper(ps) != 0)
+		return ;
+	print(ps, 'f');
 }
 
-void    put_down(t_info *ps)
+void	put_down(t_info *ps)
 {
-    t_forks *f;
-    int     num;
-    
-    f = (t_forks *)ps->forks;
-    num = ps->num;
-    print(ps, 'e');
+	t_forks	*f;
+	int		num;
+
+	f = (t_forks *)ps->forks;
+	num = ps->num;
 	if (before_eat(ps) == 0)
+	{
+		print(ps, 'e');
 		ft_usleep(ps->eat);
-    if (even_odd(ps->id) == 0)
-    {
-        ft_pthread_mutex_unlock(&f->forks[(ps->id + 1) % num]);
-        ft_pthread_mutex_unlock(&f->forks[ps->id]);
-    }
-    else
-    {
-        ft_pthread_mutex_unlock(&f->forks[ps->id]);
-        ft_pthread_mutex_unlock(&f->forks[(ps->id + 1) % num]);
-    }
-    ft_pthread_mutex_lock(&ps->mutex->last_eat_lock);
+	}
+	if (even_odd(ps->id) == 0)
+	{
+		ft_pthread_mutex_unlock(&f->forks[(ps->id + 1) % num]);
+		ft_pthread_mutex_unlock(&f->forks[ps->id]);
+	}
+	else
+	{
+		ft_pthread_mutex_unlock(&f->forks[ps->id]);
+		ft_pthread_mutex_unlock(&f->forks[(ps->id + 1) % num]);
+	}
+	ft_pthread_mutex_lock(&ps->mutex->last_eat_lock);
 	ps->death_time = current_t() + ps->die;
-    ft_pthread_mutex_unlock(&ps->mutex->last_eat_lock);
+	ft_pthread_mutex_unlock(&ps->mutex->last_eat_lock);
 }

@@ -6,16 +6,16 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:57:43 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/05/18 14:57:44 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/05/23 16:50:17 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-long    current_t()
+long	current_t(void)
 {
-    struct timeval t;
+	struct timeval	t;
 
-    gettimeofday(&t, NULL);
-    return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
+	gettimeofday(&t, NULL);
+	return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
 }
