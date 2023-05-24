@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:58:20 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/05/23 20:24:24 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/05/24 14:08:31 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ void	print_fork_n_dead(t_info *ps, int c, long t, char *colour)
 {
 	if (c == 'f')
 	{
-		printf("%s%ld %d has taken fork\n%s", colour, \
+		printf("%s%ld %d has taken a fork\n%s", colour, \
 				t - ps->start_time, ps->id + 1, NC);
-		printf("%s%ld %d has taken fork\n%s", colour, \
+		printf("%s%ld %d has taken a fork\n%s", colour, \
 				t - ps->start_time, ps->id + 1, NC);
 	}
 	else if (c == 'd' && *ps->death_state == 1)
 	{
-		printf("%s%s%ld %d died\n%s", BOLD, PINK, \
+		printf("%s%ld %d died\n%s", PINK, \
 				t - ps->start_time, ps->id + 1, NC);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 19:55:35 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/05/23 20:25:26 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/05/24 14:21:21 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,9 @@ int		even_odd(int i);
 
 //init.c
 void	initialize_fork(int num, t_info *ps);
+void	init_mutex(t_info *ps, int num);
+t_info	*init_data_one(int argc, char **argv);
+void	init_data_two(int argc, char **argv, t_info *ps);
 t_info	*initialize(int argc, char **argv);
 
 //exec.c
@@ -98,10 +101,14 @@ void	print(t_info *ps, int c);
 int		error_check(int argc, char **argv);
 
 //death_checker.c
-void	death_checker(t_info *ps);
+int		eat_checker(t_info *ps);
+int		death_checker(t_info *ps);
+void	checker(t_info	*ps);
+int		helper(t_info *ps);
+
+//before+eat_sleep.c
 int		before_sleep(t_info *ps);
 int		before_eat(t_info *ps);
-int		helper(t_info *ps);
 
 //ft_mutex.c
 void	ft_pthread_mutex_lock(pthread_mutex_t *c);
@@ -109,4 +116,6 @@ void	ft_pthread_mutex_unlock(pthread_mutex_t *c);
 void	ft_pthread_mutex_destroy(pthread_mutex_t *c);
 void	ft_pthread_join(pthread_t *philo);
 
+//one_philo.c
+void	one_philo(t_info *ps);
 #endif

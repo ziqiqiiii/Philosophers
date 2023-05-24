@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 15:35:25 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/05/23 19:41:53 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/05/24 12:21:08 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	thinking(t_info *ps)
 
 void	sleeping(t_info *ps)
 {
-	if (before_sleep(ps)== 0)
+	if (before_sleep(ps) == 0)
 	{
 		print(ps, 's');
 		ft_usleep(ps->sleep);

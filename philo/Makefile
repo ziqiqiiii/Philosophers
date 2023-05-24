@@ -5,10 +5,10 @@ SRC_DIR  = ./src
 OBJ_DIR  = ./obj
 SRCS     = utils.c even_odd.c init.c exec.c main.c pthread.c print.c \
 			error_check.c current_t.c death_checker.c ft_mutex.c \
-			eat_sleep_think.c
+			eat_sleep_think.c one_philo.c before_eat_sleep.c
 OBJS     = $(addprefix $(OBJ_DIR)/, $(SRCS:%.c=%.o))
 
-CC 		 = gcc
+CC 		 = gcc -fsanitize=address -g3
 CCD		 = gcc -g -Og -std=gnu99 
 CFLAGS	 = -Wall -Wextra -Werror
 

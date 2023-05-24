@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   one_philo.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/18 14:58:13 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/05/24 15:11:21 by tzi-qi           ###   ########.fr       */
+/*   Created: 2023/05/24 12:28:13 by tzi-qi            #+#    #+#             */
+/*   Updated: 2023/05/24 15:10:51 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	main(int argc, char **argv)
+void	one_philo(t_info *ps)
 {
-	t_info	*ps;
+	int	death_state;
 
-	if (error_check(argc, argv) == -1)
-		exit(printf("Error: wrong numbers of arguement"));
-	ps = initialize(argc, argv);
-	checker(ps);
-	pthreadjoin(ps);
-	mutexdestroy(ps);
-	// system("leaks philo");
+	ft_pthread_mutex_lock(&ps->forks->forks[0]);
+	ft_pthread_mutex_lock(&ps->mutex->print);
+	printf("%s%ld %d has taken a fork\n%s", PEACH, \
+			current_t() - ps->start_time, ps->id + 1, NC);
+	ft_pthread_mutex_unlock(&ps->mutex->print);
+	while (1)
+	{
+		if (helper(ps) != 0)
+		{
+			ft_pthread_mutex_unlock(&ps->forks->forks[0]);
+			break ;
+		}
+		ft_usleep(50);
+	}
 }
