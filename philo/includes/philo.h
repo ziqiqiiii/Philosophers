@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 19:55:35 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/05/24 14:21:21 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/05/26 16:38:51 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_info
 //utils.c
 int		ft_atoi(const char *str);
 void	ft_usleep(int ms);
+int		ft_isdigit(int c);
 
 //even-odd
 int		even_odd(int i);
