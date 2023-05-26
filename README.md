@@ -20,6 +20,9 @@ philosophers have eaten at least number_of_times_each_philosopher_must_eat
 times, the simulation stops. If not specified, the simulation stops when a
 philosopher dies.
 
-
+### Things that I've learned in this project
+- How to properly use mutexes to protect share resources
+- Have deeper understanding about pointer
+  - malloc must use pointer, so that we can free it afterward
 
 
