@@ -22,6 +22,7 @@ philosopher dies.
 
 ### Things that I've learned in this project
 - How to properly use mutexes to protect share resources
+  - e.g. forks , flag for death , flag for number of times philo have eaten , etc ...
 - Have deeper understanding about pointer
   - malloc must use pointer, so that we can free it afterward
 
